@@ -1,19 +1,18 @@
 #include "DxLib.h"
 #include "agent.h"
-//#include "qlearn.h"
 #include "DobotDll.h"
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd) {
     SetGraphMode(660, 660, 32);
-    ChangeWindowMode(TRUE); // ƒEƒBƒ“ƒhƒEƒ‚[ƒh‚Éİ’è
+    ChangeWindowMode(TRUE); // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ¢ãƒ¼ãƒ‰ã«è¨­å®š
     SetAlwaysRunFlag(TRUE);
-    DxLib_Init();   // DXƒ‰ƒCƒuƒ‰ƒŠ‰Šú‰»ˆ—
+    DxLib_Init();   // DXãƒ©ã‚¤ãƒ–ãƒ©ãƒªåˆæœŸåŒ–å‡¦ç†
     const char* file = "100.png";
     //print_graph(file);
     int i, j;
-    int s, snext;/*Œ»İ‚Ìó‘Ô‚ÆAŸ‚Ìó‘Ô*/
-    int t;/**/
-    int a;/*s“®*/
+    int s, snext;/*ç¾åœ¨ã®çŠ¶æ…‹ã¨ã€æ¬¡ã®çŠ¶æ…‹*/
+    int t;/*æ™‚åˆ»*/
+    int a;/*è¡Œå‹•*/
     int count = 0;
     int snextx,snexty;
     int pointx, pointy;
@@ -21,7 +20,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
    // int point;
     //unsigned int Color;
     //Color = GetColor(255, 255, 255);
-    srand(SEED);/*—”‚Ì‰Šú‰»*/
+    srand(SEED);/*ä¹±æ•°ã®åˆæœŸåŒ–*/
     if ((fopen_s(&fp, "step.dat", "wb")) != 0) {
         fprintf(stderr, "Data file open error.\n");
         return 1;
@@ -34,20 +33,20 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
     for (i = 1; i <= GENMAX; ++i) {
         chara1.goalcounter(count);
         chara1.roundcount(i);
-        s = rand100();/*‰Šúó‘Ô*/
+        s = rand100();/*åˆæœŸçŠ¶æ…‹*/
         chara1.setposition((s % 10) * 60, (s - (s % 10)) * 6);
         chara1.print_graph();
-        for (t = 0; t < LEVEL; t++) {/*Å‘åƒXƒeƒbƒv”‚Ü‚ÅŒJ‚è•Ô‚·*/
+        for (t = 0; t < LEVEL; t++) {/*æœ€å¤§ã‚¹ãƒ†ãƒƒãƒ—æ•°ã¾ã§ç¹°ã‚Šè¿”ã™*/
             chara1.stepcount(t);
             chara1.set_state(s);
-            /*s“®‘I‘ğ*/
+            /*è¡Œå‹•é¸æŠ*/
             a = chara1.selecta(s);
             snext = nexts(s, a);
             chara1.move_agent(a);
             chara1.updateq(s, snext, a);
             s = snext;
             chara1.print_graph();
-            /*ƒS[ƒ‹‚É“’B‚µ‚½‚ç‰Šúó‘Ô‚É–ß‚é*/
+            /*ã‚´ãƒ¼ãƒ«ã«åˆ°é”ã—ãŸã‚‰åˆæœŸçŠ¶æ…‹ã«æˆ»ã‚‹*/
             if (s == GOAL) {
                 count++;
                 fprintf(fp, "%d, %d\n",i, t);
@@ -55,30 +54,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
             }
 
         }
-        /*Q’l‚Ìo—Í*/
-       // printqvalue(qvalue);
 
     }
-   /* fclose(fp);
-    if ((fopen_s(&fp,"q.dat", "wb")) != 0) {
-        fprintf(stderr, "Data file open error.\n");
-        return 1;
-    }
-    for (i = 0; i < STATENO; i++) {
-        for (j = 0; j < ACTIONNO; j++) {
-            fprintf(fp, "%lf", qvalue[i][j]);
-            if (j == ACTIONNO - 1) {
-                fprintf(fp, "\n");
-            }
-            else {
-                fprintf(fp, ",");
-            }
-        }
-    }
-    fclose(fp);*/
-
     //rand03();
-    WaitKey();      // ƒL[“ü—Í‘Ò‚¿
-    DxLib::DxLib_End();    // DXƒ‰ƒCƒuƒ‰ƒŠI—¹ˆ—
+    WaitKey();      // ã‚­ãƒ¼å…¥åŠ›å¾…ã¡
+    DxLib::DxLib_End();    // DXãƒ©ã‚¤ãƒ–ãƒ©ãƒªçµ‚äº†å‡¦ç†
     return 0;
 }
